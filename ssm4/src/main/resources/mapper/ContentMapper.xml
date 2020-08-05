@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshu.dao.ContentMapper">
+	<select id="findList" parameterType="contentVo" resultType="contentVo">
+	SELECT c.*,l.categoryname AS lname FROM content c , contentcategory l 
+	<where>
+	c.contentCategoryId = l.contentCategoryId
+	<if test="contenttitle!=null and contenttitle!=''">
+	and c.contenttitle like '%${contenttitle}%'
+	</if>
+	<if test="contentcategoryid!=null and contentcategoryid!=0">
+	and c.contentCategoryId = #{contentcategoryid}
+	</if>
+	</where>
+	</select>
+	
+	<select id="countContent" resultType="contentVo">
+	SELECT l.categoryname AS lname , COUNT(c.contentId) AS num FROM contentcategory l LEFT JOIN content c ON c.contentCategoryId=l.contentCategoryId GROUP BY l.contentCategoryId
+	</select>
+</mapper>
